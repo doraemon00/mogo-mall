@@ -3,11 +3,12 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content" 
-    ref="scroll" 
-    :probe-type="3"
-    @scroll="contentScroll"
-    :pull-up-load="true"
+    <scroll
+      class="content"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+      :pull-up-load="true"
     >
       <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
@@ -71,15 +72,26 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
-  mounted(){
+  mounted() {
+    const refresh = this.debounce(this.$refs.scroll.refresh, 500);
+
     //3.监听 item 中图片加载完成
-    this.$bus.$on('itemImageLoad',()=>{
-      console.log("----")
-      this.$refs.scroll.refresh()
-    })
+    this.$bus.$on("itemImageLoad", () => {
+      refresh();
+    });
   },
   methods: {
     //   事件监听相关的方法
+    debounce(func, delay) {
+      let timer = null;
+      return function(...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          func.apply(this, args);
+        }, delay);
+      };
+    },
+
     tabClick(index) {
       // console.log(index)
       switch (index) {
@@ -101,7 +113,7 @@ export default {
       this.isShowBackTop = -position.y > 1000;
       // console.log(position)
     },
-    
+
     //   网络请求的相关方法
     getHomeMultidata() {
       getHomeMultidata().then(res => {

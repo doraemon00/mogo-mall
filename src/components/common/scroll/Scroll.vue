@@ -14,6 +14,10 @@ export default {
       probeType:{
           type:Number,
           default:0
+      },
+      pullUpLoad:{
+        type:Boolean,
+        default:false
       }
   },
   data() {
@@ -30,28 +34,32 @@ export default {
         pullUpLoad:this.pullUpLoad
     })
     //2.监听滚动的位置
+    if(this.probeType === 2 || this.probeType === 3)
     this.scroll.on('scroll',(position)=>{
         // console.log(position)
         this.$emit('scroll',position)
     })
 
-    this.scroll.refresh()
-    console.log(this.scroll)
-    
-
+    //3.监听 scroll 滚动到底部
+    if(this.pullUpLoad){
+      this.scroll.on('pullingUp',()=>{
+        // console.log("监听滚动到底部")
+        this.$emit('pullingUp')
+      })
+    }
 
   },
   methods:{
       scrollTo(x,y,time=300){
           this.scroll && this.scroll.scrollTo(x,y,time)
       },
-      finishPullUp(){
-          this.scroll.finishPullUp()
-      },
       refresh(){
-        console.log("----")
+        // console.log("----")
         this.scroll &&  this.scroll.refresh()
-      }
+      },
+      finishPullUp(){
+         this.scroll &&  this.scroll.finishPullUp()
+      },
   }
 };
 </script>

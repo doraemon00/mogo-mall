@@ -8,7 +8,7 @@
     :probe-type="3"
     @scroll="contentScroll"
     :pull-up-load="true"
-    @pullingUp="loadMore">
+    >
       <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
       <feature-view />
@@ -70,6 +70,11 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+    //3.监听 item 中图片加载完成
+    this.$bus.$on('itemImageLoad',()=>{
+      console.log("----")
+      this.$refs.scroll.refresh()
+    })
   },
   methods: {
     //   事件监听相关的方法
@@ -94,13 +99,7 @@ export default {
       this.isShowBackTop = -position.y > 1000;
       // console.log(position)
     },
-    loadMore(){
-        // console.log("上拉加载更多")
-        this.getHomeGoods(this.currentType)
-
-        // 监听最新的高度
-        // this.$ref.scroll.scroll.refresh()
-    },
+    
     //   网络请求的相关方法
     getHomeMultidata() {
       getHomeMultidata().then(res => {
@@ -114,8 +113,6 @@ export default {
         console.log(res);
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
-
-        this.$refs.scroll.finishPullUp()
       });
     }
   }

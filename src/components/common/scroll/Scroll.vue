@@ -14,10 +14,6 @@ export default {
       probeType:{
           type:Number,
           default:0
-      },
-      pullUpLoad:{
-          type:Boolean,
-          default:false
       }
   },
   data() {
@@ -38,11 +34,10 @@ export default {
         // console.log(position)
         this.$emit('scroll',position)
     })
-    //3.监听上拉事件
-    this.scroll.on('pullingUp',()=>{
-        // console.log("上拉加载更多")
-        this.$emit('pullingUp')
-    })
+
+    this.scroll.refresh()
+    console.log(this.scroll)
+    
 
 
   },
@@ -52,6 +47,9 @@ export default {
       },
       finishPullUp(){
           this.scroll.finishPullUp()
+      },
+      refresh(){
+        this.scroll.refresh()
       }
   }
 };

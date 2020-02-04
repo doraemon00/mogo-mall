@@ -62,7 +62,8 @@ export default {
       currentType: "pop",
       isShowBackTop: false,
       tabOffsetTop:0,
-      isTabFixed:false
+      isTabFixed:false,
+      saveY:0
     };
   },
   computed: {
@@ -70,7 +71,14 @@ export default {
       return this.goods[this.currentType].list;
     }
   },
-
+  activated(){
+    this.$refs.scroll.scrollTo(0,this.saveY,0)
+    this.$refs.scroll.refresh()
+  },
+  deactivated(){
+    this.saveY = this.$refs.scroll.getScrollY()
+    // console.log(this.save)
+  },
   created() {
     //1.请求多个数据
     this.getHomeMultidata();
@@ -125,7 +133,7 @@ export default {
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
       console.log(this.tabOffsetTop)
     },
-
+    
     //   网络请求的相关方法
     getHomeMultidata() {
       getHomeMultidata().then(res => {

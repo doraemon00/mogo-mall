@@ -25,6 +25,9 @@ import Scroll from "components/common/scroll/Scroll";
 import GoodsList from 'components/content/goods/GoodsList'
 
 import { getDetail, Goods, Shop,GoodsParam,getRecommend} from "network/detail";
+import {debounce} from 'common/utils'
+import {itemListenerMixin} from 'common/mixin'
+
 export default {
   name: "Detail",
   components: {
@@ -37,8 +40,8 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     GoodsList
-    
   },
+  mixins:[itemListenerMixin],
   data() {
     return {
       iid: null,
@@ -48,7 +51,7 @@ export default {
       detailInfo:{},
       paramInfo:{},
       commentInfo:{},
-      recommends:[]
+      recommends:[],
     };
   },
   created() {
@@ -85,10 +88,13 @@ export default {
       // console.log(res)
       this.recommends = res.data.list
     })
-
-    
-    
     );
+  },
+  mounted(){
+    
+  },
+  destroyed(){
+    this.$bus.$off('itemImageLoad',this.itemImgListenner)
   },
   methods:{
       imageLoad(){

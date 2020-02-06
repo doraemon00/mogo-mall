@@ -11,7 +11,7 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo" />
       <goods-list ref="recommend" :goods="recommends" />
     </scroll>
-    <detail-bottom-bar />
+    <detail-bottom-bar @addCart="addToCart" />
   </div>
 </template>
 <script>
@@ -36,7 +36,7 @@ import {
   getRecommend
 } from "network/detail";
 import { debounce } from "common/utils";
-import { itemListenerMixin } from "common/mixin";
+import { itemListenerMixin,backTopMixin } from "common/mixin";
 
 export default {
   name: "Detail",
@@ -52,7 +52,7 @@ export default {
     GoodsList,
     DetailBottomBar
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin,backTopMixin],
   data() {
     return {
       iid: null,
@@ -142,6 +142,19 @@ export default {
     titleClick(index) {
       console.log(index);
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 200);
+    },
+    addToCart(){
+      //获取购物车需要展示的信息 
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.price = this.goods.realPrice
+      product.iid = this.iid
+
+      // 将商品添加到购物车 
+      // this.$store.cartList.push(product)
+      this.$store.commit('addCart',product)
     }
   }
 };

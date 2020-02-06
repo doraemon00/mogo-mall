@@ -11,6 +11,7 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo" />
       <goods-list ref="recommend" :goods="recommends" />
     </scroll>
+    <detail-bottom-bar />
   </div>
 </template>
 <script>
@@ -21,6 +22,8 @@ import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
+import DetailBottomBar from "./childComps/DetailBottomBar"
+
 
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList";
@@ -46,7 +49,8 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
-    GoodsList
+    GoodsList,
+    DetailBottomBar
   },
   mixins: [itemListenerMixin],
   data() {
@@ -59,7 +63,7 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommends: [],
-      themeTopYs: [],
+      themeTopYs: []
       // getThemeTopY: null
     };
   },
@@ -96,19 +100,11 @@ export default {
       }
       //第一次获取 值不对
       //值不对的原因 this.$refs.params.$el 压根没有渲染
-      // this.$nextTick(() => {
-        // 2.第二次获取 值不对
-        // 值不对的原因 图片没有计算在内
-        //根据最新的数据 对应的Dom是已经被渲染出来
-        //但是图片依然没有加载完（目前获取到offsetTop不包含其中的图片）
-        // offsetTop值不对的时候 都是因为图片的问题
-        // this.themeTopYs = []
-        // this.themeTopYs.push(0);
-        // this.themeTopYs.push(this.$refs.params.$el.offsetTop);
-        // this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
-        // this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
-        // console.log(this.themeTopYs);
-      // });
+      // 2.第二次获取 值不对
+      // 值不对的原因 图片没有计算在内
+      //根据最新的数据 对应的Dom是已经被渲染出来
+      //但是图片依然没有加载完（目前获取到offsetTop不包含其中的图片）
+      // offsetTop值不对的时候 都是因为图片的问题
     });
 
     //3. 请求推荐数据
@@ -127,18 +123,15 @@ export default {
     //   console.log(this.themeTopYs);
     // },100)
   },
-  mounted() {
-    
-  },
+  mounted() {},
   destroyed() {
     this.$bus.$off("itemImageLoad", this.itemImgListenner);
   },
   methods: {
     imageLoad() {
-      
       this.$refs.scroll.refresh();
-      console.log("img1111")
-      this.getThemeTopY()
+      console.log("img1111");
+      // this.getThemeTopY()
       this.themeTopYs = [];
       this.themeTopYs.push(0);
       this.themeTopYs.push(this.$refs.params.$el.offsetTop);

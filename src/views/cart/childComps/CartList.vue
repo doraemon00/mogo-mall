@@ -13,7 +13,7 @@ import Scroll from 'components/common/scroll/Scroll'
 import CartListItem from './CartListItem'
 
 
-import { mapGett, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
     name:"CartList",
     components:{
@@ -24,13 +24,14 @@ export default {
         ...mapGetters(['cartList'])
     },
     activated(){
+        console.log("---")
         this.$refs.scroll.refresh()
     }
 }
 </script>
 <style scoped>
     .cart-list{
-        height: calc(100% - 44px -49px);
+        height: calc(100% - 44px -49px-40px);
     }
     .content{
         height: 100%;

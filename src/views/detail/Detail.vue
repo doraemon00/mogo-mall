@@ -12,7 +12,7 @@
       <goods-list ref="recommend" :goods="recommends" />
     </scroll>
     <detail-bottom-bar @addCart="addToCart" />
-    <toast :message="message" :show="show"/>
+    <!-- <toast :message="message" :show="show"/> -->
   </div>
 </template>
 <script>
@@ -39,7 +39,7 @@ import {
 import { debounce } from "common/utils";
 import { itemListenerMixin,backTopMixin } from "common/mixin";
 import { mapActions } from 'vuex'
-import Toast from 'components/common/toast/Toast'
+// import Toast from 'components/common/toast/Toast'
 
 export default {
   name: "Detail",
@@ -54,7 +54,7 @@ export default {
     DetailCommentInfo,
     GoodsList,
     DetailBottomBar,
-    Toast
+    // Toast
   },
   mixins: [itemListenerMixin,backTopMixin],
   data() {
@@ -68,8 +68,8 @@ export default {
       commentInfo: {},
       recommends: [],
       themeTopYs: [],
-      message:'',
-      show:false
+      // message:'',
+      // show:false
       // getThemeTopY: null
     };
   },
@@ -164,12 +164,13 @@ export default {
       // this.$store.commit('addCart',product)
 
       this.addCart(product).then(res=>{
-        this.show = true;
-        this.message = res
-        setTimeout(()=>{
-          this.show = false;
-          this.message = ''
-        },1500)
+        // this.show = true;
+        // this.message = res
+        // setTimeout(()=>{
+        //   this.show = false;
+        //   this.message = ''
+        // },1500)
+        this.$toast.show(res,1500)
       })
       // this.$store.dispatch('addCart',product).then(res=>{
       //   console.log(res)

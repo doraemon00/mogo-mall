@@ -12,6 +12,7 @@
       <goods-list ref="recommend" :goods="recommends" />
     </scroll>
     <detail-bottom-bar @addCart="addToCart" />
+    <toast :message="message" :show="show"/>
   </div>
 </template>
 <script>
@@ -38,6 +39,7 @@ import {
 import { debounce } from "common/utils";
 import { itemListenerMixin,backTopMixin } from "common/mixin";
 import { mapActions } from 'vuex'
+import Toast from 'components/common/toast/Toast'
 
 export default {
   name: "Detail",
@@ -51,7 +53,8 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     GoodsList,
-    DetailBottomBar
+    DetailBottomBar,
+    Toast
   },
   mixins: [itemListenerMixin,backTopMixin],
   data() {
@@ -64,7 +67,9 @@ export default {
       paramInfo: {},
       commentInfo: {},
       recommends: [],
-      themeTopYs: []
+      themeTopYs: [],
+      message:'',
+      show:false
       // getThemeTopY: null
     };
   },
@@ -159,7 +164,12 @@ export default {
       // this.$store.commit('addCart',product)
 
       this.addCart(product).then(res=>{
-        console.log(res)
+        this.show = true;
+        this.message = res
+        setTimeout(()=>{
+          this.show = false;
+          this.message = ''
+        },1500)
       })
       // this.$store.dispatch('addCart',product).then(res=>{
       //   console.log(res)
